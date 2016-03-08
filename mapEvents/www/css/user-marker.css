@@ -1,0 +1,11 @@
+.leaflet-div-icon {
+	background: transparent !important;
+	border: none !important;
+  text-align: center !important;
+  line-height: 100px !important;
+}
+
+.pulse-icon {
+  vertical-align: middle !important;
+  color: blue;
+}
