@@ -9,7 +9,7 @@ angular.module('mapEventsApplication').controller('appController', function($sco
   });
 
   $scope.verifyLocationSettings = function ($ionicPopup, $timeout, callback){
-    
+
     if (window.cordova && !$scope.isShowLocationMessage) {
 
         $timeout(function () {
@@ -87,6 +87,19 @@ angular.module('mapEventsApplication').controller('appController', function($sco
       }
 
     });
+
+
+
+   options = {timeout: 3000, enableHighAccuracy: false};
+
+   var watch = $cordovaGeolocation.watchPosition(options);
+
+   watch.then(null, function(err){
+
+   }, function(position){
+
+   });
+
 
   }
 

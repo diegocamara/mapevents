@@ -103,7 +103,6 @@ angular.module('mapEventsApplication')
       var marker = {
                   lat: position.coords.latitude,
                   lng: position.coords.longitude,
-                  focus: true,
                   message: 'Here are you baby!',
                   icon: pointIcon
               }
