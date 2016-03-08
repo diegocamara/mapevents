@@ -1,6 +1,7 @@
 angular.module('mapEventsApplication')
 .controller('homeMapController', function($scope, $rootScope, $cordovaGeolocation, $ionicPopup, $timeout){
 
+    $scope.alertsPopup = null;
 
     $scope.map = {
       defaults: {
@@ -72,11 +73,15 @@ angular.module('mapEventsApplication')
 
     $scope.openAlertsPopup = function(){
 
-      var alertsPopup = $ionicPopup.show({
-        title: 'Alerta',
+      $scope.alertsPopup = $ionicPopup.show({
+        scope: $scope,
         templateUrl: 'templates/alertspopup/alertspopup.html'
       });
 
+    }
+
+    $scope.closeAlertsPopup = function(){
+      $scope.alertsPopup.close();
     }
 
     $scope.addUserMarker = function(position){
