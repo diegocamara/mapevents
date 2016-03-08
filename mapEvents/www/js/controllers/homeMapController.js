@@ -9,9 +9,8 @@ angular.module('mapEventsApplication')
       zoomControl: false,
       scrollWheelZoom: true,
       tileLayerOptions: {
-          opacity: 0.9,
-          // detectRetina: true,
-          reuseTiles: true,
+          detectRetina: true,
+          reuseTiles: true
       }
     },
 

@@ -1,12 +1,28 @@
 angular.module('mapEventsApplication').controller('appController', function($scope, $ionicPopup, $timeout, $cordovaGeolocation, $ionicPlatform){
 
   $scope.isShowLocationMessage = false;
+  $scope.noLocationPopup;
 
   $ionicPlatform.onHardwareBackButton(function(event){
      $scope.isShowLocationMessage = false;
      event.preventDefault();
      event.stopPropagation();
   });
+
+  $scope.cancelLocationPopup = function(){
+    $scope.isShowLocationMessage = false;
+    if($scope.noLocationPopup){
+      $scope.noLocationPopup.close();
+    }
+  }
+
+  $scope.configLocationPopup = function(){
+    var diagnostic = cordova.plugins.diagnostic;
+    if(diagnostic){
+      diagnostic.switchToLocationSettings();
+    }
+    $scope.cancelLocationPopup();
+  }
 
   $scope.verifyLocationSettings = function ($ionicPopup, $timeout, callback){
 
@@ -31,30 +47,15 @@ angular.module('mapEventsApplication').controller('appController', function($sco
 
             } else {
 
-              var poppup = $ionicPopup.show({
-                  template: '',
-                  title: 'Este app requer localização',
-                  scope: null,
-                  buttons: [
-                    {text: 'Cancelar',
-                    onTap: function(e){
-                      $scope.isShowLocationMessage = false;
-                      return false;
-                    }},
-                    {text: 'Configurações de localização',
-                     onTap: function(e){
-                       $scope.isShowLocationMessage = false;
-                       return true;
-                     }}
-                  ]
+            $scope.noLocationPopup = $ionicPopup.show({
+                  templateUrl: 'templates/nolocationpopup/nolocationpopup.html',
+                  scope: $scope
                 });
 
-                poppup.then(function(res){
-
+              $scope.noLocationPopup.then(function(res){
                   if(res){
                     diagnostic.switchToLocationSettings();
                   }
-
                 });
 
                 $scope.isShowLocationMessage = true;
@@ -90,15 +91,15 @@ angular.module('mapEventsApplication').controller('appController', function($sco
 
 
 
-   options = {timeout: 3000, enableHighAccuracy: false};
-
-   var watch = $cordovaGeolocation.watchPosition(options);
-
-   watch.then(null, function(err){
-
-   }, function(position){
-
-   });
+  //  options = {timeout: 3000, enableHighAccuracy: false};
+   //
+  //  var watch = $cordovaGeolocation.watchPosition(options);
+   //
+  //  watch.then(null, function(err){
+   //
+  //  }, function(position){
+   //
+  //  });
 
 
   }
