@@ -67,7 +67,7 @@ angular.module('mapEventsApplication').controller('appController', function($sco
 
           });
 
-        }, 1000);
+        }, 500);
     }
   }
 
