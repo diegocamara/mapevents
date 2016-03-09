@@ -1,5 +1,5 @@
 angular.module('mapEventsApplication')
-.controller('homeMapController', function($scope, $rootScope, $cordovaGeolocation, $ionicPopup, $timeout){
+.controller('homeMapController', function($scope, $rootScope, $cordovaGeolocation, $ionicPopup, $timeout, camera){
 
     $scope.alertPopup = null;
 
@@ -90,6 +90,18 @@ angular.module('mapEventsApplication')
       $scope.alertPopup = $ionicPopup.show({
         scope: $scope,
         templateUrl: 'templates/highwayholepopup/highwayholepopup.html'
+      });
+    }
+
+    $scope.getPhoto = function(){
+      camera.getPicture().then(function(imageURI){
+        $scope.lastPhoto = imageURI;
+      }, function(err){
+        console.error(err);
+      },{
+      quality: 100,
+      saveToPhotoAlbum: false,
+      allowEdit: true
       });
     }
 

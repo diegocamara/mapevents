@@ -1,4 +1,4 @@
-angular.module('mapEventsApplication').config(function($stateProvider, $urlRouterProvider, $logProvider, $ionicConfigProvider){
+angular.module('mapEventsApplication').config(function($stateProvider, $urlRouterProvider, $logProvider, $ionicConfigProvider, $compileProvider){
 
   // Desabilitando log.
   $logProvider.debugEnabled(false);
@@ -9,6 +9,9 @@ angular.module('mapEventsApplication').config(function($stateProvider, $urlRoute
   $ionicConfigProvider.navBar.alignTitle('center');
 
   // $ionicNativeTransitionsProvider.enable(false);
+
+  $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|mailto|file|tel):/);
+
 
   $stateProvider.state('mainscreen',{
       url: '/mainscreen',
