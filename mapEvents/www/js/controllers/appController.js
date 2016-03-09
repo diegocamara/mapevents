@@ -1,4 +1,6 @@
-angular.module('mapEventsApplication').controller('appController', function($scope, $ionicPopup, $timeout, $cordovaGeolocation, $ionicPlatform){
+angular.module('mapEventsApplication').controller('appController',
+function($scope, $ionicPopup, $timeout, $cordovaGeolocation,
+         $ionicPlatform, $cordovaSQLite){
 
   $scope.isShowLocationMessage = false;
   $scope.noLocationPopup;

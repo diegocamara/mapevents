@@ -32,15 +32,13 @@
        <label class="item-input-wrapper">
          <input type="text" placeholder="Detalhes">
        </label>
-     </div>     
+     </div>
     </div>
   </div>
   <div class="row">
     <div class="col">
-      <button class="button button-light" style="width:100%;" ng-click="cancelLocationPopup()">Cancelar</button>
-    </div>
-    <div class="col">
-      <button class="button button-light" ng-click="getPhoto()">Photo</button>
+      <img ng-show="lastPhoto !== undefined" ng-src="{{lastPhoto}}" style="text-align: center"></center>
+      <button class="button button-light" style="width:100%;" ng-click="getPhoto()">Photo</button>
     </div>
   </div>
 </ion-content>

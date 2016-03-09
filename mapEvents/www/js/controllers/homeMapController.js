@@ -1,5 +1,7 @@
 angular.module('mapEventsApplication')
-.controller('homeMapController', function($scope, $rootScope, $cordovaGeolocation, $ionicPopup, $timeout, camera){
+.controller('homeMapController',
+function($scope, $rootScope, $cordovaGeolocation,
+         $ionicPopup, $timeout, $cordovaSQLite, camera, $cordovaCamera){
 
     $scope.alertPopup = null;
 
@@ -94,16 +96,29 @@ angular.module('mapEventsApplication')
     }
 
     $scope.getPhoto = function(){
+
+      var options = {
+          quality: 100,
+          destinationType: Camera.DestinationType.DATA_URL,
+          sourceType: Camera.PictureSourceType.CAMERA,
+          allowEdit: true,
+          encodingType: Camera.EncodingType.JPEG,
+          targetWidth: 100,
+          targetHeight: 100,
+          popoverOptions: CameraPopoverOptions,
+          saveToPhotoAlbum: false,
+    	    correctOrientation:true
+    };
+
       camera.getPicture().then(function(imageURI){
+        console.log(getBase64ImageDataUrl(imageURI));
         $scope.lastPhoto = imageURI;
       }, function(err){
         console.error(err);
-      },{
-      quality: 100,
-      saveToPhotoAlbum: false,
-      allowEdit: true
-      });
+      },options);
     }
+
+
 
     $scope.addUserMarker = function(position){
 
@@ -151,3 +166,22 @@ angular.module('mapEventsApplication')
 
 
 });
+
+function getBase64ImageDataUrl(img) {
+
+    var canvas, ctx, dataURL;
+
+    canvas = document.createElement("canvas");
+    canvas.width = img.width;
+    canvas.height = img.height;
+
+    // Copy the image contents to the canvas
+    ctx = canvas.getContext("2d");
+    ctx.drawImage(img, 0, 0, img.width, img.height);
+
+    // Get the data-URL formatted image
+    dataURL = canvas.toDataURL("image/jpeg");
+
+    return dataURL;
+
+}

@@ -10,8 +10,7 @@ angular.module('mapEventsApplication').config(function($stateProvider, $urlRoute
 
   // $ionicNativeTransitionsProvider.enable(false);
 
-  $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|mailto|file|tel):/);
-
+  $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|mailto|file|tel|blob):|data:image\//);
 
   $stateProvider.state('mainscreen',{
       url: '/mainscreen',
