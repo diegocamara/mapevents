@@ -1,0 +1,46 @@
+<style media="screen">
+  .popup {
+    width: 80% !important;
+    height: 50vh !important;
+    border: 2px solid white;
+    -webkit-box-shadow: none;
+  	-moz-box-shadow: none;
+  	box-shadow: none;
+  }
+
+  .popup-body {
+    background-color: #426E86 !important;
+    height: 100%;
+    -webkit-box-shadow: none;
+  	-moz-box-shadow: none;
+  	box-shadow: none;
+  }
+
+  .popup-head {
+    display: none;
+  }
+
+</style>
+<div class="bar bar-header bar-dark">
+  <h1 class="title">Buraco na via</h1>
+  <button class="button button-icon icon ion-close-round" ng-click="closeAlertPopup()"></button>
+</div>
+<ion-content class="has-header">
+  <div class="row">
+    <div class="col">
+     <div class="item item-input-inset">
+       <label class="item-input-wrapper">
+         <input type="text" placeholder="Detalhes">
+       </label>
+     </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <button class="button button-light" style="width:100%;" ng-click="cancelLocationPopup()">Cancelar</button>
+    </div>
+    <div class="col">
+      <button class="button button-light" ng-click="configLocationPopup()">Configurações</button>
+    </div>
+  </div>
+</ion-content>
