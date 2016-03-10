@@ -96,26 +96,11 @@ function($scope, $rootScope, $cordovaGeolocation,
     }
 
     $scope.getPhoto = function(){
-
-      var options = {
-          quality: 100,
-          destinationType: Camera.DestinationType.DATA_URL,
-          sourceType: Camera.PictureSourceType.CAMERA,
-          allowEdit: true,
-          encodingType: Camera.EncodingType.JPEG,
-          targetWidth: 100,
-          targetHeight: 100,
-          popoverOptions: CameraPopoverOptions,
-          saveToPhotoAlbum: false,
-    	    correctOrientation:true
-    };
-
-      camera.getPicture().then(function(imageURI){
-        console.log(getBase64ImageDataUrl(imageURI));
-        $scope.lastPhoto = imageURI;
+      camera.getPicture().then(function(imageURL){
+        $scope.lastPhoto = imageURL;
       }, function(err){
         console.error(err);
-      },options);
+      });
     }
 
 
@@ -166,22 +151,3 @@ function($scope, $rootScope, $cordovaGeolocation,
 
 
 });
-
-function getBase64ImageDataUrl(img) {
-
-    var canvas, ctx, dataURL;
-
-    canvas = document.createElement("canvas");
-    canvas.width = img.width;
-    canvas.height = img.height;
-
-    // Copy the image contents to the canvas
-    ctx = canvas.getContext("2d");
-    ctx.drawImage(img, 0, 0, img.width, img.height);
-
-    // Get the data-URL formatted image
-    dataURL = canvas.toDataURL("image/jpeg");
-
-    return dataURL;
-
-}

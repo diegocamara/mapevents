@@ -2,14 +2,36 @@ angular.module('mapEventsApplication').factory('camera', function($q){
 
   return {
 
-    getPicture: function(options){
+    getPicture: function(){
+
+      var options = {
+          quality: 100,
+          sourceType: Camera.PictureSourceType.CAMERA,
+          destinationType: Camera.DestinationType.DATA_URL,
+          encodingType: Camera.EncodingType.JPEG,
+          targetWidth: 720,
+          targetHeight: 1024,
+          popoverOptions: CameraPopoverOptions,
+          saveToPhotoAlbum: false,
+    	    correctOrientation:true
+    };
 
       var q = $q.defer();
 
       navigator.camera.getPicture(function(result){
 
-        q.resolve("data:image/jpeg;base64,"+result);
-        
+      var blob = base64toBlob(result, 'image/jpeg');
+
+      // Lê o conteúdo do arquivo blob. 
+      // var reader = new window.FileReader();
+      // reader.readAsDataURL(blob);
+      //
+      // reader.onloadend = function(){
+      //   base64data = reader.result;
+      // }
+
+      q.resolve("data:image/jpeg;base64,"+result);
+
       }, function(err){
 
         q.reject(err);
@@ -23,3 +45,27 @@ angular.module('mapEventsApplication').factory('camera', function($q){
   }
 
 });
+
+function base64toBlob(b64Data, contentType, sliceSize) {
+    contentType = contentType || '';
+    sliceSize = sliceSize || 512;
+
+    var byteCharacters = atob(b64Data);
+    var byteArrays = [];
+
+    for (var offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+        var slice = byteCharacters.slice(offset, offset + sliceSize);
+
+        var byteNumbers = new Array(slice.length);
+        for (var i = 0; i < slice.length; i++) {
+            byteNumbers[i] = slice.charCodeAt(i);
+        }
+
+        var byteArray = new Uint8Array(byteNumbers);
+
+        byteArrays.push(byteArray);
+    }
+
+    var blob = new Blob(byteArrays, {type: contentType});
+    return blob;
+}
