@@ -5,14 +5,14 @@ angular.module('mapEventsApplication').factory('camera', function($q){
     getPicture: function(){
 
       var options = {
-          quality: 100,
+          quality: 50,
           sourceType: Camera.PictureSourceType.CAMERA,
           destinationType: Camera.DestinationType.DATA_URL,
           encodingType: Camera.EncodingType.JPEG,
-          targetWidth: 720,
-          targetHeight: 1024,
+          targetWidth: 640,
+          targetHeight: 480,
           popoverOptions: CameraPopoverOptions,
-          saveToPhotoAlbum: false,
+          saveToPhotoAlbum: true,
     	    correctOrientation:true
     };
 
@@ -22,7 +22,7 @@ angular.module('mapEventsApplication').factory('camera', function($q){
 
       var blob = base64toBlob(result, 'image/jpeg');
 
-      // Lê o conteúdo do arquivo blob. 
+      // Lê o conteúdo do arquivo blob.
       // var reader = new window.FileReader();
       // reader.readAsDataURL(blob);
       //
