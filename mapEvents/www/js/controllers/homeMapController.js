@@ -6,6 +6,11 @@ function($scope, $rootScope, $cordovaGeolocation,
 
     $scope.alertPopup = null;
     $scope.currentCategoryModal = null;
+    $scope.commentsModal = null;
+
+    $scope.alert = {
+      severidade: 50
+    }
 
     $scope.map = {
       defaults: {
@@ -80,6 +85,25 @@ function($scope, $rootScope, $cordovaGeolocation,
     }).then(function(modal){
       $scope.alertsModal = modal;
     });
+
+    $ionicModal.fromTemplateUrl('templates/modais/comentariosmodal.html', {
+      scope: $scope,
+      animation: 'slide-in-up'
+    }).then(function(modal){
+      $scope.commentsModal = modal;
+    });
+
+    $scope.openCommentsModal = function(){
+      if($scope.commentsModal){
+        $scope.commentsModal.show();
+      }
+    }
+
+    $scope.closeCommentsModal = function(){
+      if($scope.commentsModal){
+        $scope.commentsModal.hide();
+      }
+    }
 
     $scope.openAlertsModal = function(){
       if($scope.alertsModal){

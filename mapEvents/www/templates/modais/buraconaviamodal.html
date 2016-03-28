@@ -1,3 +1,11 @@
+<style media="screen">
+  input[type="text"]{
+    font-size:20px;
+  }
+  .rowAlert {
+    padding:30px;
+  }
+</style>
 <ion-modal-view>
   <ion-header-bar align-title="center" class="bar-dark">
     <h1 class="title">Buraco na Via</h1>
@@ -6,6 +14,51 @@
     </div>
   </ion-header-bar>
   <ion-content class="modalContent">
+
+    <div class="row rowAlert">
+      <div class="col">
+          <center>
+            <img style="width:100px;height:100px;" src="img/platformerAssets/extraAnimationsAndEnemies/Alien sprites/alienGreen_badge2.png">
+          </center>
+      </div>
+    </div>
+
+    <div class="row rowAlert">
+      <div class="col">
+       <div class="item-input-inset">
+         <label class="item-input-wrapper">
+           <input type="text" placeholder="Comentários" style="width:100%;">
+         </label>
+       </div>
+      </div>
+    </div>
+    <div class="row rowAlert">
+      <div class="col" style="text-align:center;">
+      <img ng-show="lastPhoto !== undefined" ng-src="{{lastPhoto}}" style="width:100px;height:100px;"></img>
+      <a class="button button-icon icon item-profile" ng-click="getPhoto()" ng-show="lastPhoto == undefined">
+        <i class="fa fa-camera fa-5x item-profile" style="color:#F8F1E5;"></i>
+      </a>
+      </div>
+      <!-- <div class="col" style="text-align:center;">
+        <a class="button button-icon icon" ng-click="openCommentsModal()">
+          <i class="fa fa-comment fa-5x" style="color:#F8F1E5;"></i>
+        </a>
+      </div> -->
+    </div>
+    <div class="row rowAlert">
+      <div class="col">
+        <div class="range range-light">
+          <input type="range" name="volume" min="0" max="100" value="50" ng-model="alert.severidade">
+        </div>
+      </div>
+    </div>
+    <div class="row" style="position:absolute;bottom:40px;">
+      <div class="col">
+        <button class="button button-balanced" style="width:100%;">
+          Enviar
+        </button>
+      </div>
+    </div>
 
   </ion-content>
 </ion-modal-view>
