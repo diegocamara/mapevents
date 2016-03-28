@@ -1,9 +1,11 @@
 angular.module('mapEventsApplication')
 .controller('homeMapController',
 function($scope, $rootScope, $cordovaGeolocation,
-         $ionicPopup, $timeout, $cordovaSQLite, camera, $cordovaCamera){
+         $ionicPopup, $timeout, $cordovaSQLite, camera,
+         $ionicModal, modaisservice){
 
     $scope.alertPopup = null;
+    $scope.currentCategoryModal = null;
 
     $scope.map = {
       defaults: {
@@ -56,7 +58,7 @@ function($scope, $rootScope, $cordovaGeolocation,
       //     reuseTiles: true,
       // }
 
-      // layers: http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png
+      // layers: http://{s}.tile.openstreetmap.org/{z}/{x}/{buraconaviamodaly}.png
       //         http://{s}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png
       //         http://{s}.tile.osm.org/{z}/{x}/{y}.png
 
@@ -72,27 +74,38 @@ function($scope, $rootScope, $cordovaGeolocation,
       });
     }
 
-    $scope.openAlertsPopup = function(){
+    $ionicModal.fromTemplateUrl('templates/modais/alertsmodal.html', {
+      scope: $scope,
+      animation: 'slide-in-up'
+    }).then(function(modal){
+      $scope.alertsModal = modal;
+    });
 
-      $scope.alertPopup = $ionicPopup.show({
-        scope: $scope,
-        templateUrl: 'templates/alertspopup/alertspopup.html'
-      });
-
-    }
-
-    $scope.closeAlertPopup = function(){
-      if($scope.alertPopup){
-        $scope.alertPopup.close();
+    $scope.openAlertsModal = function(){
+      if($scope.alertsModal){
+        $scope.alertsModal.show();
       }
     }
 
-    $scope.openHighwayHolePopup = function(){
-      $scope.closeAlertPopup();
-      $scope.alertPopup = $ionicPopup.show({
-        scope: $scope,
-        templateUrl: 'templates/highwayholepopup/highwayholepopup.html'
+    $scope.closeAlertsModal = function(){
+      if($scope.alertsModal){
+        $scope.alertsModal.remove();
+      }
+    }
+
+    $scope.openCategoryModal = function(categoryName){
+      modaisservice.configureTemplateModal($scope, categoryName, function(modal){
+          $scope.currentCategoryModal = modal;
+        if($scope.currentCategoryModal){
+          $scope.currentCategoryModal.show();
+        }
       });
+    }
+
+    $scope.closeCategoryModal = function(){
+      if($scope.currentCategoryModal){
+        $scope.currentCategoryModal.remove();
+      }
     }
 
     $scope.getPhoto = function(){
@@ -102,7 +115,6 @@ function($scope, $rootScope, $cordovaGeolocation,
         console.error(err);
       });
     }
-
 
 
     $scope.addUserMarker = function(position){
