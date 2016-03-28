@@ -89,7 +89,7 @@ function($scope, $rootScope, $cordovaGeolocation,
 
     $scope.closeAlertsModal = function(){
       if($scope.alertsModal){
-        $scope.alertsModal.remove();
+        $scope.alertsModal.hide();
       }
     }
 

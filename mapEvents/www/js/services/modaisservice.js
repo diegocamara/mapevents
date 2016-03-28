@@ -17,7 +17,7 @@ angular.module('mapEventsApplication').factory('modaisservice', function($ionicM
         scope: $scope,
         animation: 'slide-in-up'
       }).then(function(modal){
-        
+
         if(callback){
           callback(modal);
         }

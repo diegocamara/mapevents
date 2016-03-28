@@ -35,5 +35,7 @@
     "cordova-plugin-wkwebview",
     "org.apache.cordova.geolocation"
   ],
-  "cordovaPlatforms": []
+  "cordovaPlatforms": [
+    "android"
+  ]
 }
