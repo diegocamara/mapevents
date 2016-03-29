@@ -2,8 +2,12 @@
   input[type="text"]{
     font-size:20px;
   }
-  .rowAlert {
+  .rowAlert{
     padding:30px;
+  }
+
+  .bar-footer{
+    height:70px;
   }
 </style>
 <ion-modal-view>
@@ -23,7 +27,7 @@
       </div>
     </div>
 
-    <div class="row rowAlert">
+    <!-- <div class="row rowAlert">
       <div class="col">
        <div class="item-input-inset">
          <label class="item-input-wrapper">
@@ -31,34 +35,35 @@
          </label>
        </div>
       </div>
-    </div>
+    </div> -->
     <div class="row rowAlert">
       <div class="col" style="text-align:center;">
-      <img ng-show="lastPhoto !== undefined" ng-src="{{lastPhoto}}" style="width:100px;height:100px;"></img>
-      <a class="button button-icon icon item-profile" ng-click="getPhoto()" ng-show="lastPhoto == undefined">
-        <i class="fa fa-camera fa-5x item-profile" style="color:#F8F1E5;"></i>
-      </a>
-      </div>
-      <!-- <div class="col" style="text-align:center;">
-        <a class="button button-icon icon" ng-click="openCommentsModal()">
-          <i class="fa fa-comment fa-5x" style="color:#F8F1E5;"></i>
+        <a class="button button-icon icon" ng-click="getPhoto()" ng-if="lastPhoto == undefined">
+          <i class="fa fa-camera fa-5x item-profile" style="color:#F8F1E5;"></i>
         </a>
-      </div> -->
+        <img ng-if="lastPhoto !== undefined" ng-src="{{lastPhoto}}" ng-click="getPhoto()" style="width:100px;height:100px;"></img>
+      </div>
+      <div class="col" style="text-align:center;">
+        <a class="button button-icon icon" ng-click="showCommentsModal()">
+          <i class="fa fa-comment fa-5x" style="color:#F8F1E5;" ng-if="!alerta.isExibirComentarioPreenchido()"></i>
+          <i class="fa fa-commenting-o fa-5x" style="color:#F8F1E5;" ng-if="alerta.isExibirComentarioPreenchido()"></i>
+        </a>
+      </div>
     </div>
     <div class="row rowAlert">
       <div class="col">
         <div class="range range-light">
-          <input type="range" name="volume" min="0" max="100" value="50" ng-model="alert.severidade">
+          <input type="range" name="volume" min="0" max="100" value="50" ng-model="alerta.severidade">
         </div>
       </div>
     </div>
-    <div class="row" style="position:absolute;bottom:40px;">
-      <div class="col">
-        <button class="button button-balanced" style="width:100%;">
-          Enviar
-        </button>
-      </div>
-    </div>
-
+    {{alerta}}
   </ion-content>
+  <ion-footer-bar class="bar-assertive" style="background:none;">
+    <div class="buttons" style="width:100% !important;">
+      <button class="button button-balanced" style="width:100%;background-color:#8abe74;">
+        Enviar
+      </button>
+    </div>
+  </ion-footer-bar>
 </ion-modal-view>

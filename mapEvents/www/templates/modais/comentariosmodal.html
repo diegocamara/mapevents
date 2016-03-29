@@ -1,9 +1,26 @@
 <ion-modal-view>
   <ion-content style="background-color:#444444;">
-    <div class="item-input-inset">
-      <label class="item-input-wrapper">
-        <textarea autofocus="true" rows="20" type="text" placeholder="Detalhes" style="width:100%;height:100%;"></textarea>
-      </label>
+    <div class="row">
+      <div class="col">
+        <div class="item-input-inset" style="width:100%;height:100%;">
+          <label class="item-input-wrapper" style="width:100%;height:150px;">
+            <!-- <textarea autofocus="true" rows="20" type="text" placeholder="Detalhes" style="width:100%;height:100%;"></textarea> -->
+            <input id="comentariosInputText" type="text" placeholder="Comentários" style="width:100%;" ng-model="alerta.comentarios">
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="row" style="text-align:center;">
+      <div class="col">
+        <a class="button button-icon icon" ng-click="hideAndCancelCommentsModal()">
+          <i class="fa fa-times fa-5x" style="color:#a70a33;"></i>
+        </a>
+      </div>
+      <div class="col">
+        <a class="button button-icon icon" ng-click="hideCommentsModal()">
+          <i class="fa fa-check fa-5x" style="color:#8abe74;"></i>
+        </a>
+      </div>
     </div>
   </ion-content>
 </ion-modal-view>

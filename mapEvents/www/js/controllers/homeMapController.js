@@ -8,10 +8,6 @@ function($scope, $rootScope, $cordovaGeolocation,
     $scope.currentCategoryModal = null;
     $scope.commentsModal = null;
 
-    $scope.alert = {
-      severidade: 50
-    }
-
     $scope.map = {
       defaults: {
       tileLayer: 'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
@@ -93,21 +89,34 @@ function($scope, $rootScope, $cordovaGeolocation,
       $scope.commentsModal = modal;
     });
 
-    $scope.openCommentsModal = function(){
+    $scope.showCommentsModal = function(){
       if($scope.commentsModal){
         $scope.commentsModal.show();
+
+        var commentsComponent = document.getElementById('comentariosInputText');
+
+            $timeout(function () {
+              commentsComponent.focus();
+            }, 10);a
+
       }
     }
 
-    $scope.closeCommentsModal = function(){
+    $scope.hideCommentsModal = function(){
       if($scope.commentsModal){
         $scope.commentsModal.hide();
       }
     }
 
+    $scope.hideAndCancelCommentsModal = function(){
+      $scope.hideCommentsModal();
+      $scope.alerta.comentarios = null;
+    }
+
     $scope.openAlertsModal = function(){
       if($scope.alertsModal){
         $scope.alertsModal.show();
+        $scope.alerta = obtainDefaultAlertData();
       }
     }
 
@@ -129,12 +138,16 @@ function($scope, $rootScope, $cordovaGeolocation,
     $scope.closeCategoryModal = function(){
       if($scope.currentCategoryModal){
         $scope.currentCategoryModal.remove();
+        $scope.lastPhoto = null;
       }
     }
+
+
 
     $scope.getPhoto = function(){
       camera.getPicture().then(function(imageURL){
         $scope.lastPhoto = imageURL;
+        $scope.alerta.imagem = imageURL;
       }, function(err){
         console.error(err);
       });
@@ -185,5 +198,16 @@ function($scope, $rootScope, $cordovaGeolocation,
 
     }
 
-
 });
+
+function obtainDefaultAlertData(){
+  return {
+    categoria: null,
+    imagem: null,
+    severidade: 50,
+    comentarios: null,
+    isExibirComentarioPreenchido: function(){
+      return this.comentarios != null && this.comentarios != '';
+    }
+  }
+}
