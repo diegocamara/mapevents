@@ -41,7 +41,7 @@
         <a class="button button-icon icon" ng-click="getPhoto()" ng-if="lastPhoto == undefined">
           <i class="fa fa-camera fa-5x item-profile" style="color:#F8F1E5;"></i>
         </a>
-        <img ng-if="lastPhoto !== undefined" ng-src="{{lastPhoto}}" ng-click="getPhoto()" style="width:100px;height:100px;"></img>
+        <img ng-if="lastPhoto !== undefined && lastPhoto !== null" ng-src="{{lastPhoto}}" ng-click="getPhoto()" style="width:100px;height:100px;"></img>
       </div>
       <div class="col" style="text-align:center;">
         <a class="button button-icon icon" ng-click="showCommentsModal()">
@@ -57,7 +57,6 @@
         </div>
       </div>
     </div>
-    {{alerta}}
   </ion-content>
   <ion-footer-bar class="bar-assertive" style="background:none;">
     <div class="buttons" style="width:100% !important;">

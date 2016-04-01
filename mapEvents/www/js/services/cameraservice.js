@@ -12,7 +12,7 @@ angular.module('mapEventsApplication').factory('camera', function($q){
           targetWidth: 640,
           targetHeight: 480,
           popoverOptions: CameraPopoverOptions,
-          saveToPhotoAlbum: true,
+          saveToPhotoAlbum: false,
     	    correctOrientation:true
     };
 

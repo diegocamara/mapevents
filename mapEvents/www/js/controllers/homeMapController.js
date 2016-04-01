@@ -91,13 +91,14 @@ function($scope, $rootScope, $cordovaGeolocation,
 
     $scope.showCommentsModal = function(){
       if($scope.commentsModal){
+
         $scope.commentsModal.show();
 
         var commentsComponent = document.getElementById('comentariosInputText');
 
             $timeout(function () {
               commentsComponent.focus();
-            }, 10);a
+            }, 10);
 
       }
     }
@@ -149,7 +150,10 @@ function($scope, $rootScope, $cordovaGeolocation,
         $scope.lastPhoto = imageURL;
         $scope.alerta.imagem = imageURL;
       }, function(err){
-        console.error(err);
+        // console.error(err);
+        if(lastPhoto){
+          lastPhoto = null;
+        }
       });
     }
 
