@@ -13,10 +13,40 @@ function($scope, $rootScope, $cordovaGeolocation,
     $scope.saveAlert = function(){
       if($scope.alerta){
 
-        var query = 'INSERT INTO TBALERTA (CATEGORIA, IMAGEM, SEVERIDADE, COMENTARIOS, LATITUDE, LONGITUDE, DATA, FACEBOOKID) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
+        var query = 'INSERT INTO TBALERTA (CATEGORIA, IMAGEM, SEVERIDADE, COMENTARIOS, LATITUDE, LONGITUDE, DATA, FACEBOOKID, SINCRONIZADO) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
 
-        $cordovaSQLite.execute(db, query, obtainAlertDataArray($scope)).then(function(res){
+        $cordovaSQLite.execute(db, query, obtainAlertDataArray($scope, camera)).then(function(res){
           // console.log(res.insertId);
+        }, function(err){
+          console.error(err);
+        });
+
+        query = 'SELECT * FROM TBALERTA';
+
+        $cordovaSQLite.execute(db, query).then(function(res){
+          
+          for(alert = 0; alert < res.rows.length; alert++){
+
+            if(res.rows.item(alert).IMAGEM){
+
+              console.log(res.rows.item(alert).IMAGEM);
+
+              // var reader = new window.FileReader();
+              //     reader.readAsDataURL(res.rows.item(alert).IMAGEM);
+                  
+              //     reader.onloadend = function(){
+              //       base64data = reader.result;
+              //       console.log(base64data);
+              //     }
+
+            }
+
+            
+          }
+          
+          $scope.currentCategoryModal.remove();
+          $scope.alertsModal.remove();
+
         }, function(err){
           console.error(err);
         });
@@ -169,12 +199,12 @@ function($scope, $rootScope, $cordovaGeolocation,
 
     $scope.getPhoto = function(){
       camera.getPicture().then(function(imageURL){
-        $scope.lastPhoto = imageURL;
+        $scope.lastPhoto = "data:image/jpeg;base64," + imageURL;
         $scope.alerta.imagem = imageURL;
       }, function(err){
         // console.error(err);
-        if(lastPhoto){
-          lastPhoto = null;
+        if($scope.lastPhoto){
+          $scope.lastPhoto = null;
         }
       });
     }
@@ -187,11 +217,11 @@ function($scope, $rootScope, $cordovaGeolocation,
       $scope.map.center = {
         lat: position.coords.latitude,
         lng: position.coords.longitude,
-        zoom: 14
+        zoom: 15
       }
 
       var pointIcon = {
-          iconUrl: 'img/baseUiPack/PNG/blue_boxTick.png',
+          iconUrl: 'img/blue_boxTick.png',
           iconSize:     [28, 28], // size of the icon
           iconAnchor:   [14, 14]  // point of the icon which will correspond to marker's location
       };
@@ -236,24 +266,31 @@ function obtainDefaultAlertData(){
     longitude: null,
     data: null,
     facebookid: null,
+    sincronizado: 0,
     isExibirComentarioPreenchido: function(){
       return this.comentarios != null && this.comentarios != '';
     }
   }
 }
 
-function obtainAlertDataArray($scope){
+function obtainAlertDataArray($scope, camera){
 
   var alertArray = [];
 
   alertArray.push($scope.alerta.categoria);
-  alertArray.push($scope.alerta.imagem);
+
+  if($scope.alerta.imagem){    
+    $scope.alerta.imagem = camera.getBlob($scope.alerta.imagem);
+    alertArray.push($scope.alerta.imagem);
+  }
+
   alertArray.push($scope.alerta.severidade);
   alertArray.push($scope.alerta.comentarios);
   alertArray.push($scope.alerta.latitude);
   alertArray.push($scope.alerta.longitude);
   alertArray.push($scope.alerta.data);
   alertArray.push($scope.alerta.facebookid);
+  alertArray.push($scope.alerta.sincronizado);
 
   return alertArray;
 

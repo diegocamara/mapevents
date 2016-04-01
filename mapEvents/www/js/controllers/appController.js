@@ -4,11 +4,15 @@ function($scope, $ionicPopup, $timeout, $cordovaGeolocation,
 
   $scope.isShowLocationMessage = false;
   $scope.noLocationPopup;
+  var db;
+
 
   // iniciando o banco.
-  var db = $cordovaSQLite.openDB({name: "mapeventsapplication.db"});
+  document.addEventListener("deviceready",function(){
+  
+    var db = $cordovaSQLite.openDB({name: "mapeventsapplication.db"});
 
-  var query = 'CREATE TABLE IF NOT EXISTS TBALERTA (' +
+    var query = 'CREATE TABLE IF NOT EXISTS TBALERTA (' +
               'ID INTEGER PRIMARY KEY,' +
               'CATEGORIA INTEGER,' +
               'IMAGEM BLOB,' +
@@ -19,13 +23,14 @@ function($scope, $ionicPopup, $timeout, $cordovaGeolocation,
               'DATA TEXT,' +
               'FACEBOOKID TEXT,' +
               'SINCRONIZADO INTEGER)';
-
-
-  $cordovaSQLite.execute(db, query).then(function(res){
-    console.log(res);
-  }, function(err){
-    console.error(err);
-  });
+              
+    $cordovaSQLite.execute(db, query).then(function(res){
+      // console.log(res);
+    }, function(err){
+      console.error(err);
+    });
+    
+  },false);
 
 
   $ionicPlatform.onHardwareBackButton(function(event){

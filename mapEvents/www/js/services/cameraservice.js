@@ -30,7 +30,7 @@ angular.module('mapEventsApplication').factory('camera', function($q){
       //   base64data = reader.result;
       // }
 
-      q.resolve("data:image/jpeg;base64,"+result);
+      q.resolve(result);
 
       }, function(err){
 
@@ -40,6 +40,10 @@ angular.module('mapEventsApplication').factory('camera', function($q){
 
       return q.promise;
 
+    },
+
+    getBlob: function(base64data){
+      return base64toBlob(base64data, 'image/jpeg');
     }
 
   }
@@ -65,7 +69,8 @@ function base64toBlob(b64Data, contentType, sliceSize) {
 
         byteArrays.push(byteArray);
     }
-
+    
     var blob = new Blob(byteArrays, {type: contentType});
+    
     return blob;
 }
