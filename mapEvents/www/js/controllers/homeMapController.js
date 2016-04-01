@@ -82,30 +82,33 @@ function($scope, $rootScope, $cordovaGeolocation,
       $scope.alertsModal = modal;
     });
 
-    $ionicModal.fromTemplateUrl('templates/modais/comentariosmodal.html', {
-      scope: $scope,
-      animation: 'slide-in-up'
-    }).then(function(modal){
-      $scope.commentsModal = modal;
-    });
-
     $scope.showCommentsModal = function(){
-      if($scope.commentsModal){
 
-        $scope.commentsModal.show();
+      $ionicModal.fromTemplateUrl('templates/modais/comentariosmodal.html', {
+        scope: $scope,
+        animation: 'slide-in-up'
+      }).then(function(modal){
+        $scope.commentsModal = modal;
 
-        var commentsComponent = document.getElementById('comentariosInputText');
+        if($scope.commentsModal){
 
-            $timeout(function () {
-              commentsComponent.focus();
-            }, 10);
+          $scope.commentsModal.show();
 
-      }
+          var commentsComponent = document.getElementById('comentariosInputText');
+
+              $timeout(function () {
+                commentsComponent.focus();
+              }, 100);
+
+        }
+
+      });
+
     }
 
     $scope.hideCommentsModal = function(){
       if($scope.commentsModal){
-        $scope.commentsModal.hide();
+        $scope.commentsModal.remove();
       }
     }
 
@@ -117,7 +120,6 @@ function($scope, $rootScope, $cordovaGeolocation,
     $scope.openAlertsModal = function(){
       if($scope.alertsModal){
         $scope.alertsModal.show();
-        $scope.alerta = obtainDefaultAlertData();
       }
     }
 
@@ -131,6 +133,8 @@ function($scope, $rootScope, $cordovaGeolocation,
       modaisservice.configureTemplateModal($scope, categoryName, function(modal){
           $scope.currentCategoryModal = modal;
         if($scope.currentCategoryModal){
+          $scope.alerta = obtainDefaultAlertData();
+          $scope.lastPhoto = null;
           $scope.currentCategoryModal.show();
         }
       });
@@ -139,6 +143,8 @@ function($scope, $rootScope, $cordovaGeolocation,
     $scope.closeCategoryModal = function(){
       if($scope.currentCategoryModal){
         $scope.currentCategoryModal.remove();
+        $scope.currentCategoryModal = null;
+        $scope.alerta = null;
         $scope.lastPhoto = null;
       }
     }
@@ -210,6 +216,10 @@ function obtainDefaultAlertData(){
     imagem: null,
     severidade: 50,
     comentarios: null,
+    latitude: null,
+    longitude: null,
+    data: null,
+    facebookid: null,
     isExibirComentarioPreenchido: function(){
       return this.comentarios != null && this.comentarios != '';
     }
