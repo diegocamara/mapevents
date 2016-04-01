@@ -2,11 +2,27 @@ angular.module('mapEventsApplication')
 .controller('homeMapController',
 function($scope, $rootScope, $cordovaGeolocation,
          $ionicPopup, $timeout, $cordovaSQLite, camera,
-         $ionicModal, modaisservice){
+         $ionicModal, modaisservice, $cordovaSQLite){
 
     $scope.alertPopup = null;
     $scope.currentCategoryModal = null;
     $scope.commentsModal = null;
+
+    var db = $cordovaSQLite.openDB({name: "mapeventsapplication.db"});
+
+    $scope.saveAlert = function(){
+      if($scope.alerta){
+
+        var query = 'INSERT INTO TBALERTA (CATEGORIA, IMAGEM, SEVERIDADE, COMENTARIOS, LATITUDE, LONGITUDE, DATA, FACEBOOKID) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
+
+        $cordovaSQLite.execute(db, query, obtainAlertDataArray($scope)).then(function(res){
+          // console.log(res.insertId);
+        }, function(err){
+          console.error(err);
+        });
+
+      }
+    }
 
     $scope.map = {
       defaults: {
@@ -171,7 +187,7 @@ function($scope, $rootScope, $cordovaGeolocation,
       $scope.map.center = {
         lat: position.coords.latitude,
         lng: position.coords.longitude,
-        zoom: 18
+        zoom: 14
       }
 
       var pointIcon = {
@@ -224,4 +240,21 @@ function obtainDefaultAlertData(){
       return this.comentarios != null && this.comentarios != '';
     }
   }
+}
+
+function obtainAlertDataArray($scope){
+
+  var alertArray = [];
+
+  alertArray.push($scope.alerta.categoria);
+  alertArray.push($scope.alerta.imagem);
+  alertArray.push($scope.alerta.severidade);
+  alertArray.push($scope.alerta.comentarios);
+  alertArray.push($scope.alerta.latitude);
+  alertArray.push($scope.alerta.longitude);
+  alertArray.push($scope.alerta.data);
+  alertArray.push($scope.alerta.facebookid);
+
+  return alertArray;
+
 }

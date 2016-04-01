@@ -5,6 +5,29 @@ function($scope, $ionicPopup, $timeout, $cordovaGeolocation,
   $scope.isShowLocationMessage = false;
   $scope.noLocationPopup;
 
+  // iniciando o banco.
+  var db = $cordovaSQLite.openDB({name: "mapeventsapplication.db"});
+
+  var query = 'CREATE TABLE IF NOT EXISTS TBALERTA (' +
+              'ID INTEGER PRIMARY KEY,' +
+              'CATEGORIA INTEGER,' +
+              'IMAGEM BLOB,' +
+              'SEVERIDADE INTEGER,' +
+              'COMENTARIOS TEXT,' +
+              'LATITUDE NUMERIC,' +
+              'LONGITUDE NUMERIC,' +
+              'DATA TEXT,' +
+              'FACEBOOKID TEXT,' +
+              'SINCRONIZADO INTEGER)';
+
+
+  $cordovaSQLite.execute(db, query).then(function(res){
+    console.log(res);
+  }, function(err){
+    console.error(err);
+  });
+
+
   $ionicPlatform.onHardwareBackButton(function(event){
      $scope.isShowLocationMessage = false;
      event.preventDefault();
