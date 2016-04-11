@@ -1,6 +1,6 @@
 angular.module('mapEventsApplication').controller('appController',
 function($scope, $ionicPopup, $timeout, $cordovaGeolocation,
-         $ionicPlatform, $cordovaSQLite){
+         $ionicPlatform, $cordovaSQLite,  pouchdbService){
 
   $scope.isShowLocationMessage = false;
   $scope.noLocationPopup;
@@ -8,27 +8,31 @@ function($scope, $ionicPopup, $timeout, $cordovaGeolocation,
 
 
   // iniciando o banco.
-  document.addEventListener("deviceready",function(){
-  
-    var db = $cordovaSQLite.openDB({name: "mapeventsapplication.db"});
+  document.addEventListener("deviceready",function(){  
 
-    var query = 'CREATE TABLE IF NOT EXISTS TBALERTA (' +
-              'ID INTEGER PRIMARY KEY,' +
-              'CATEGORIA INTEGER,' +
-              'IMAGEM BLOB,' +
-              'SEVERIDADE INTEGER,' +
-              'COMENTARIOS TEXT,' +
-              'LATITUDE NUMERIC,' +
-              'LONGITUDE NUMERIC,' +
-              'DATA TEXT,' +
-              'FACEBOOKID TEXT,' +
-              'SINCRONIZADO INTEGER)';
+    pouchdbService.initDB();
+
+    // var db = $cordovaSQLite.openDB({name: "mapeventsapplication.db"});
+
+    // var query = 'CREATE TABLE IF NOT EXISTS TBALERTA (' +
+    //           'ID INTEGER PRIMARY KEY,' +
+    //           'CATEGORIA INTEGER,' +
+    //           'IMAGEM BLOB,' +
+    //           'SEVERIDADE INTEGER,' +
+    //           'COMENTARIOS TEXT,' +
+    //           'LATITUDE NUMERIC,' +
+    //           'LONGITUDE NUMERIC,' +
+    //           'DATA TEXT,' +
+    //           'FACEBOOKID TEXT,' +
+    //           'SINCRONIZADO INTEGER)';
               
-    $cordovaSQLite.execute(db, query).then(function(res){
-      // console.log(res);
-    }, function(err){
-      console.error(err);
-    });
+    // $cordovaSQLite.execute(db, query).then(function(res){
+    //   // console.log(res);
+    // }, function(err){
+    //   console.error(err);
+    // });
+
+
     
   },false);
 

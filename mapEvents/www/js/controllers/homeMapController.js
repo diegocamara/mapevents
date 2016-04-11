@@ -2,54 +2,25 @@ angular.module('mapEventsApplication')
 .controller('homeMapController',
 function($scope, $rootScope, $cordovaGeolocation,
          $ionicPopup, $timeout, $cordovaSQLite, camera,
-         $ionicModal, modaisservice, $cordovaSQLite){
+         $ionicModal, modaisservice, $cordovaSQLite, pouchdbService){
 
     $scope.alertPopup = null;
     $scope.currentCategoryModal = null;
     $scope.commentsModal = null;
 
-    var db = $cordovaSQLite.openDB({name: "mapeventsapplication.db"});
+    //var db = $cordovaSQLite.openDB({name: "mapeventsapplication.db"});
 
     $scope.saveAlert = function(){
       if($scope.alerta){
 
-        var query = 'INSERT INTO TBALERTA (CATEGORIA, IMAGEM, SEVERIDADE, COMENTARIOS, LATITUDE, LONGITUDE, DATA, FACEBOOKID, SINCRONIZADO) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
+        pouchdbService.insertAlert($scope.alerta);
 
-        $cordovaSQLite.execute(db, query, obtainAlertDataArray($scope, camera)).then(function(res){
-          // console.log(res.insertId);
-        }, function(err){
-          console.error(err);
+        pouchdbService.getAllAlerts().then(function(alerts){
+          console.log(alerts);
         });
 
-        query = 'SELECT * FROM TBALERTA';
-
-        $cordovaSQLite.execute(db, query).then(function(res){
-          
-          for(alert = 0; alert < res.rows.length; alert++){
-
-            if(res.rows.item(alert).IMAGEM){
-
-              console.log(res.rows.item(alert).IMAGEM);
-
-              // var reader = new window.FileReader();
-              //     reader.readAsDataURL(res.rows.item(alert).IMAGEM);
-                  
-              //     reader.onloadend = function(){
-              //       base64data = reader.result;
-              //       console.log(base64data);
-              //     }
-
-            }
-
-            
-          }
-          
-          $scope.currentCategoryModal.remove();
-          $scope.alertsModal.remove();
-
-        }, function(err){
-          console.error(err);
-        });
+        $scope.currentCategoryModal.remove();
+        $scope.alertsModal.remove();
 
       }
     }
@@ -281,6 +252,7 @@ function obtainAlertDataArray($scope, camera){
 
   if($scope.alerta.imagem){    
     $scope.alerta.imagem = camera.getBlob($scope.alerta.imagem);
+    console.log($scope.alerta.imagem);
     alertArray.push($scope.alerta.imagem);
   }
 
