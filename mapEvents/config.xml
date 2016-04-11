@@ -11,6 +11,7 @@
   <access origin="*"/>
   <allow-intent href="http://*/*"/>
   <allow-intent href="https://*/*"/>
+  <preference name="loadUrlTimeoutValue" value="700000"/>
   <preference name="CrosswalkAnimatable" value="true"/>
   <preference name="webviewbounce" value="false"/>
   <preference name="UIWebViewBounce" value="false"/>
