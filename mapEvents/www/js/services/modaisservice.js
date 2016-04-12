@@ -4,11 +4,12 @@ angular.module('mapEventsApplication').factory('modaisservice', function($ionicM
 
     configureTemplateModal: function($scope, categoryName, callback){
 
-      var templateUrl = '';
+      var templateUrl = '';      
 
       switch(categoryName){
         case 'buraconavia':{
-          templateUrl = 'templates/modais/buraconaviamodal.html'
+          templateUrl = 'templates/modais/buraconaviamodal.html',
+          $scope.categoryCode = 1;
           break;
         }
       }

@@ -2,25 +2,42 @@ angular.module('mapEventsApplication')
 .controller('homeMapController',
 function($scope, $rootScope, $cordovaGeolocation,
          $ionicPopup, $timeout, $cordovaSQLite, camera,
-         $ionicModal, modaisservice, $cordovaSQLite, pouchdbService){
+         $ionicModal, modaisservice, $cordovaSQLite, 
+         pouchdbService){
 
     $scope.alertPopup = null;
     $scope.currentCategoryModal = null;
     $scope.commentsModal = null;
+    $scope.categoryCode = null;
 
-    //var db = $cordovaSQLite.openDB({name: "mapeventsapplication.db"});
+    $scope.mapAlerts = [];
 
-    $scope.saveAlert = function(){
+    $scope.saveAlert = function(categoryCode){
       if($scope.alerta){
 
-        pouchdbService.insertAlert($scope.alerta);
+        $scope.alerta.data = new Date();
+        $scope.alerta.severidade = Number($scope.alerta.severidade);
+        $scope.alerta.categoria = $scope.categoryCode;
+        
+        pouchdbService.insertAlert($scope.alerta, function(result){
+          //console.log(result);
+          // pouchdbService.getAllAlerts().then(function(alerts){
+          //   console.log(alerts);
+          // });
+          
 
-        pouchdbService.getAllAlerts().then(function(alerts){
-          console.log(alerts);
-        });
+          var alert;
+
+         pouchdbService.getAlert(result.id).then(function(doc){
+              alert = doc;
+              console.log(alert);
+         });
+
+        });        
 
         $scope.currentCategoryModal.remove();
         $scope.alertsModal.remove();
+        $scope.loadAlertsModal();
 
       }
     }
@@ -61,7 +78,11 @@ function($scope, $rootScope, $cordovaGeolocation,
 
     document.addEventListener("resume", function() {
       $scope.$parent.verifyLocationSettings($ionicPopup, $timeout, function(position){
+
+        if(!($scope.alerta.latitude || $scope.alerta.longitude)){
           $scope.addUserMarker(position);
+        }
+          
       });
     }, false);
 
@@ -92,12 +113,17 @@ function($scope, $rootScope, $cordovaGeolocation,
       });
     }
 
-    $ionicModal.fromTemplateUrl('templates/modais/alertsmodal.html', {
-      scope: $scope,
-      animation: 'slide-in-up'
-    }).then(function(modal){
-      $scope.alertsModal = modal;
-    });
+
+    $scope.loadAlertsModal = function(){
+
+      $ionicModal.fromTemplateUrl('templates/modais/alertsmodal.html', {
+        scope: $scope,
+        animation: 'slide-in-up'
+      }).then(function(modal){
+        $scope.alertsModal = modal;
+      });
+
+    }    
 
     $scope.showCommentsModal = function(){
 
@@ -135,6 +161,7 @@ function($scope, $rootScope, $cordovaGeolocation,
     }
 
     $scope.openAlertsModal = function(){
+      $scope.categoryCode = null;
       if($scope.alertsModal){
         $scope.alertsModal.show();
       }
@@ -150,7 +177,11 @@ function($scope, $rootScope, $cordovaGeolocation,
       modaisservice.configureTemplateModal($scope, categoryName, function(modal){
           $scope.currentCategoryModal = modal;
         if($scope.currentCategoryModal){
-          $scope.alerta = obtainDefaultAlertData();
+
+          if(!$scope.alerta){
+            $scope.alerta = obtainDefaultAlertData();
+          }          
+
           $scope.lastPhoto = null;
           $scope.currentCategoryModal.show();
         }
@@ -171,17 +202,26 @@ function($scope, $rootScope, $cordovaGeolocation,
     $scope.getPhoto = function(){
       camera.getPicture().then(function(imageURL){
         $scope.lastPhoto = "data:image/jpeg;base64," + imageURL;
-        $scope.alerta.imagem = imageURL;
+        $scope.alerta._attachments.imagem.data = imageURL;
       }, function(err){
         // console.error(err);
         if($scope.lastPhoto){
           $scope.lastPhoto = null;
+          $scope.alerta._attachments.imagem.data = null;
         }
       });
     }
 
 
     $scope.addUserMarker = function(position){
+      
+      if(!$scope.alerta){
+        $scope.alerta = obtainDefaultAlertData();
+      }
+
+      // Update alert position
+      $scope.alerta.latitude = position.coords.latitude;
+      $scope.alerta.longitude = position.coords.longitude;
 
       $scope.map.markers = [];
 
@@ -189,7 +229,7 @@ function($scope, $rootScope, $cordovaGeolocation,
         lat: position.coords.latitude,
         lng: position.coords.longitude,
         zoom: 15
-      }
+      }     
 
       var pointIcon = {
           iconUrl: 'img/blue_boxTick.png',
@@ -225,12 +265,19 @@ function($scope, $rootScope, $cordovaGeolocation,
 
     }
 
+    $scope.loadAlertsModal();
+
 });
 
 function obtainDefaultAlertData(){
   return {
     categoria: null,
-    imagem: null,
+    _attachments: {
+      imagem: {
+        content_type: 'image/png',
+        data: ''
+      }
+    },    
     severidade: 50,
     comentarios: null,
     latitude: null,
@@ -242,28 +289,4 @@ function obtainDefaultAlertData(){
       return this.comentarios != null && this.comentarios != '';
     }
   }
-}
-
-function obtainAlertDataArray($scope, camera){
-
-  var alertArray = [];
-
-  alertArray.push($scope.alerta.categoria);
-
-  if($scope.alerta.imagem){    
-    $scope.alerta.imagem = camera.getBlob($scope.alerta.imagem);
-    console.log($scope.alerta.imagem);
-    alertArray.push($scope.alerta.imagem);
-  }
-
-  alertArray.push($scope.alerta.severidade);
-  alertArray.push($scope.alerta.comentarios);
-  alertArray.push($scope.alerta.latitude);
-  alertArray.push($scope.alerta.longitude);
-  alertArray.push($scope.alerta.data);
-  alertArray.push($scope.alerta.facebookid);
-  alertArray.push($scope.alerta.sincronizado);
-
-  return alertArray;
-
 }

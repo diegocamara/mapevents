@@ -11,6 +11,7 @@ function($scope, $ionicPopup, $timeout, $cordovaGeolocation,
   document.addEventListener("deviceready",function(){  
 
     pouchdbService.initDB();
+    console.log("Testing");
 
     // var db = $cordovaSQLite.openDB({name: "mapeventsapplication.db"});
 

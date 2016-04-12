@@ -1,8 +1,7 @@
 angular.module('mapEventsApplication').factory('pouchdbService', ['$q', function($q){
 
 	var db;
-	var alerts;
-
+	
 	return {
 
 		initDB: function() {
@@ -10,13 +9,15 @@ angular.module('mapEventsApplication').factory('pouchdbService', ['$q', function
 			db = new PouchDB('mapeventsapplication', {adapter: 'websql'});
 		},
 
-		insertAlert: function(alert){			
+		insertAlert: function(alert, callback){			
 			return $q.when(db.post(alert, function(err, result){
 
-				if(!err){
-					console.log(result);
-				}else{
+				if(err){
 					console.error(err);
+				}
+
+				if(callback){
+					callback(result);
 				}
 				
 			}));
@@ -30,11 +31,15 @@ angular.module('mapEventsApplication').factory('pouchdbService', ['$q', function
 			return $q.when(db.remove(alert));
 		},
 
+		getAlert: function(alertId){
+			return $q.when(db.get(alertId));
+		},
+
 		getAllAlerts: function(){
 
-			if(!alerts){
+			var alerts = [];
 
-				return $q.when(db.allDocs({include_docs: true}).then(function(docs){
+				return $q.when(db.allDocs({include_docs: true, attachments: true}).then(function(docs){
 
 					alerts = docs.rows.map(function(row){
 
@@ -47,11 +52,7 @@ angular.module('mapEventsApplication').factory('pouchdbService', ['$q', function
 
 					return alerts;
 
-				}));
-
-			}else{
-
-			}
+				}));		
 
 
 		}
