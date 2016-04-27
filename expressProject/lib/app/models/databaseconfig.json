@@ -1,0 +1,32 @@
+{
+  "development": {
+    "dialect": "mongodb",
+    "storage": "mongodb://romildusdb1:romildus123@ds051883.mongolab.com:51883/romildusdb",
+    "options":{
+      "server":{"socketOptions": { "keepAlive": 1, "connectTimeoutMS": 30000 } },
+      "replset":{ "socketOptions": { "keepAlive": 1, "connectTimeoutMS" : 30000 } }
+    }
+  },
+  "test":{
+    "username": "root",
+    "password": "1234567",
+    "database": "productdeliverydb",
+    "host": "localhost",
+    "dialect": "mysql"
+  },
+  "production":{
+    "username": "root",
+    "password": "1234567",
+    "database": "productdeliverydb",
+    "host": "localhost",
+    "dialect": "mysql"
+  },
+  "localhost":{
+    "dialect": "mongodb",
+    "storage": "mongodb://localhost/romildusdb",
+    "options":{
+      "server":{"socketOptions": { "keepAlive": 1, "connectTimeoutMS": 30000 } },
+      "replset":{ "socketOptions": { "keepAlive": 1, "connectTimeoutMS" : 30000 } }
+    }
+  }
+}

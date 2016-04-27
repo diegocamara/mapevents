@@ -2,7 +2,7 @@ angular.module('mapEventsApplication')
 .controller('homeMapController',
 function($scope, $rootScope, $cordovaGeolocation,
          $ionicPopup, $timeout, $cordovaSQLite, camera,
-         $ionicModal, modaisservice, $cordovaSQLite, 
+         $ionicModal, modaisservice, $cordovaSQLite,
          pouchdbService){
 
     $scope.alertPopup = null;
@@ -18,22 +18,22 @@ function($scope, $rootScope, $cordovaGeolocation,
         $scope.alerta.data = new Date();
         $scope.alerta.severidade = Number($scope.alerta.severidade);
         $scope.alerta.categoria = $scope.categoryCode;
-        
+
         pouchdbService.insertAlert($scope.alerta, function(result){
           //console.log(result);
           // pouchdbService.getAllAlerts().then(function(alerts){
           //   console.log(alerts);
           // });
-          
 
-          var alert;
+
+         var alert;
 
          pouchdbService.getAlert(result.id).then(function(doc){
               alert = doc;
               console.log(alert);
          });
 
-        });        
+        });
 
         $scope.currentCategoryModal.remove();
         $scope.alertsModal.remove();
@@ -82,7 +82,7 @@ function($scope, $rootScope, $cordovaGeolocation,
         if(!($scope.alerta.latitude || $scope.alerta.longitude)){
           $scope.addUserMarker(position);
         }
-          
+
       });
     }, false);
 
@@ -123,7 +123,7 @@ function($scope, $rootScope, $cordovaGeolocation,
         $scope.alertsModal = modal;
       });
 
-    }    
+    }
 
     $scope.showCommentsModal = function(){
 
@@ -180,7 +180,7 @@ function($scope, $rootScope, $cordovaGeolocation,
 
           if(!$scope.alerta){
             $scope.alerta = obtainDefaultAlertData();
-          }          
+          }
 
           $scope.lastPhoto = null;
           $scope.currentCategoryModal.show();
@@ -214,7 +214,7 @@ function($scope, $rootScope, $cordovaGeolocation,
 
 
     $scope.addUserMarker = function(position){
-      
+
       if(!$scope.alerta){
         $scope.alerta = obtainDefaultAlertData();
       }
@@ -229,7 +229,7 @@ function($scope, $rootScope, $cordovaGeolocation,
         lat: position.coords.latitude,
         lng: position.coords.longitude,
         zoom: 15
-      }     
+      }
 
       var pointIcon = {
           iconUrl: 'img/blue_boxTick.png',
@@ -277,7 +277,7 @@ function obtainDefaultAlertData(){
         content_type: 'image/png',
         data: ''
       }
-    },    
+    },
     severidade: 50,
     comentarios: null,
     latitude: null,
