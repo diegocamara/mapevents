@@ -8,10 +8,16 @@ function($scope, $ionicPopup, $timeout, $cordovaGeolocation,
 
 
   // iniciando o banco.
-  document.addEventListener("deviceready",function(){  
+  document.addEventListener("deviceready",function(){
+
+    console.log(cordovaHTTP);
+    cordovaHTTP.enableSSLPinning(true, function() {
+      console.log('success!');
+    }, function() {
+      console.log('error :(');
+    });
 
     pouchdbService.initDB();
-    console.log("Testing");
 
     // var db = $cordovaSQLite.openDB({name: "mapeventsapplication.db"});
 
@@ -26,7 +32,7 @@ function($scope, $ionicPopup, $timeout, $cordovaGeolocation,
     //           'DATA TEXT,' +
     //           'FACEBOOKID TEXT,' +
     //           'SINCRONIZADO INTEGER)';
-              
+
     // $cordovaSQLite.execute(db, query).then(function(res){
     //   // console.log(res);
     // }, function(err){
@@ -34,7 +40,7 @@ function($scope, $ionicPopup, $timeout, $cordovaGeolocation,
     // });
 
 
-    
+
   },false);
 
 

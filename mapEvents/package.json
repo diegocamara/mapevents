@@ -30,6 +30,7 @@
     "cordova.plugins.diagnostic",
     "cordova-plugin-camera",
     "cordova-sqlite-storage@0.7.14",
+    "cordova-plugin-http"
     {
       "locator": "https://github.com/Telerik-Verified-Plugins/NativePageTransitions#0.6.2",
       "id": "com.telerik.plugins.nativepagetransitions"
